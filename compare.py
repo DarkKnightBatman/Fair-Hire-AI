@@ -1,6 +1,6 @@
 import re
 
-# -------- SKILL WEIGHTS -------- #
+
 SKILL_WEIGHTS = {
     "python": 2,
     "machine learning": 3,
@@ -15,15 +15,15 @@ SKILL_WEIGHTS = {
     "hadoop": 2
 }
 
-# -------- FEATURE EXTRACTION -------- #
+
 def extract_features(text):
     text = text.lower()
 
-    # -------- EXPERIENCE -------- #
+   
     exp_matches = re.findall(r'(\d+)\s*(?:years|yrs)', text)
     experience = max([int(x) for x in exp_matches]) if exp_matches else 0
 
-    # -------- EDUCATION -------- #
+  
     education_score = 0
     if "phd" in text:
         education_score = 5
@@ -32,16 +32,16 @@ def extract_features(text):
     elif "b.tech" in text or "bachelor" in text:
         education_score = 3
 
-    # -------- SKILLS -------- #
+   
     skill_score = 0
     for skill, weight in SKILL_WEIGHTS.items():
         if skill in text:
             skill_score += weight
 
-    # -------- PROJECTS -------- #
+    
     project_count = len(re.findall(r'project', text))
 
-    # -------- CERTIFICATIONS -------- #
+    
     cert_count = len(re.findall(r'certified|certificate', text))
 
     return {
@@ -53,9 +53,9 @@ def extract_features(text):
     }
 
 
-# -------- SCORING FUNCTION -------- #
+
 def compute_score(f):
-    # Normalize (avoid one feature dominating)
+   
     exp_score = min(f["experience"] / 10, 1) * 10
     skill_score = min(f["skills"] / 10, 1) * 10
     project_score = min(f["projects"] / 5, 1) * 5
@@ -73,7 +73,7 @@ def compute_score(f):
     return round(total, 2)
 
 
-# -------- MAIN COMPARISON -------- #
+
 def compare_resumes(text1, text2):
     f1 = extract_features(text1)
     f2 = extract_features(text2)
