@@ -77,9 +77,7 @@ fairhire-ai/
 ├── app1.py              # Streamlit UI
 ├── compare.py           # Comparison logic
 ├── train_model.py       # ML training script
-├── clf.pkl              # Trained model
 ├── tfidf.pkl            # TF-IDF vectorizer
-├── label_encoder.pkl    # Label encoder
 ├── UpdatedResumeDataSet.csv
 └── README.md
 ```
