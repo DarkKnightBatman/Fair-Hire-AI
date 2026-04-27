@@ -3,12 +3,12 @@ import pickle
 import re
 from PyPDF2 import PdfReader
 
-# Load models
+
 clf = pickle.load(open('clf.pkl', 'rb'))
 tfidf = pickle.load(open('tfidf.pkl', 'rb'))
 
 
-# Clean function
+
 def clean_resume(txt):
     txt = re.sub(r'http\S+\s*', ' ', txt)
     txt = re.sub(r'RT|cc', ' ', txt)
@@ -18,7 +18,7 @@ def clean_resume(txt):
     txt = re.sub(r'\s+', ' ', txt)
     return txt
 
-# -------- APP -------- #
+
 def main():
     st.title("📄 FairHire AI - Unbiased Resume Screener")
 
@@ -26,7 +26,6 @@ def main():
 
     if uploaded_file is not None:
 
-        # -------- READ FILE -------- #
         if uploaded_file.type == "application/pdf":
             pdf = PdfReader(uploaded_file)
             resume_text = ""
@@ -38,21 +37,20 @@ def main():
             except:
                 resume_text = uploaded_file.read().decode('latin-1')
 
-        # Preview
+ 
         st.subheader("📃 Resume Preview")
         st.write(resume_text[:500])
 
-        # Clean
+
         cleaned_resume = clean_resume(resume_text)
 
-        # Transform
         input_features = tfidf.transform([cleaned_resume])
 
-        # Predict
+
         pred_id = clf.predict(input_features)[0]
         role = le.inverse_transform([pred_id])[0]
 
-        # Confidence (if available)
+
         try:
             probs = clf.predict_proba(input_features)
             confidence = max(probs[0]) * 100
@@ -60,7 +58,7 @@ def main():
         except:
             st.success(f"🎯 Predicted Role: {role}")
 
-        # -------- FAIRNESS CHECK -------- #
+
         st.subheader("⚖️ Fairness Analysis")
 
         neutral_text = re.sub(
@@ -81,7 +79,7 @@ def main():
         else:
             st.success("✅ No significant bias detected")
 
-        # -------- DEBUG -------- #
+  
         st.subheader("🔍 Top Keywords Detected")
 
         feature_names = tfidf.get_feature_names_out()
