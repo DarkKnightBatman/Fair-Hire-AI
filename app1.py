@@ -2,10 +2,10 @@ import streamlit as st
 from compare import compare_resumes
 from PyPDF2 import PdfReader
 
-# ---------- PAGE CONFIG ----------
+
 st.set_page_config(page_title="FairHire AI", layout="wide")
 
-# ---------- CSS ----------
+
 st.markdown("""
 <style>
 .card {
@@ -23,7 +23,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ---------- FILE READER ----------
+
 def read_file(file):
     if file.type == "application/pdf":
         pdf = PdfReader(file)
@@ -34,7 +34,7 @@ def read_file(file):
     else:
         return file.read().decode('utf-8', errors='ignore')
 
-# ---------- HEADER ----------
+
 st.markdown("<h1 class='title'>⚖️ FairHire AI</h1>", unsafe_allow_html=True)
 st.markdown("<h4 class='title'>Unbiased Resume Comparison System</h4>", unsafe_allow_html=True)
 
@@ -49,7 +49,7 @@ with col1:
 with col2:
     file2 = st.file_uploader("📄 Upload Candidate 2 Resume", type=['txt','pdf'], key="2")
 
-# ---------- PROCESS ----------
+
 if file1 and file2:
 
     text1 = read_file(file1)
@@ -86,7 +86,7 @@ if file1 and file2:
         st.markdown(f"### 🧮 Final Score: **{s1}**")
         st.markdown("</div>", unsafe_allow_html=True)
 
-    # ---------- Candidate 2 ----------
+   
     with col2:
         box_class = "card winner" if s2 > s1 else "card"
         st.markdown(f'<div class="{box_class}">', unsafe_allow_html=True)
@@ -110,7 +110,7 @@ if file1 and file2:
         st.markdown(f"### 🧮 Final Score: **{s2}**")
         st.markdown("</div>", unsafe_allow_html=True)
 
-    # ---------- RESULT ----------
+    
     st.divider()
     st.subheader("🏆 Final Decision")
 
@@ -121,7 +121,7 @@ if file1 and file2:
     else:
         st.info("⚖️ Both candidates are equally strong")
 
-    # ---------- EXPLANATION ----------
+  
     st.subheader("🧠 Explanation")
 
     st.info("""
